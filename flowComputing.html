@@ -5,20 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Valve Sizing Calculator</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="../static/css/styles.css">
     <link href='https://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src={{ url_for('static', filename='js/flowComputing.js')}}></script>
   </head>
-<body id="body">
+<body id="body" style="background-color: rgb(171, 175, 170);">
 
   <header>
 <!-- Image and text -->
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#" >
-    <img src="docs/valve.png" width="40" height="40" class="d-inline-block align-center" alt="" loading="lazy">
-    Flow Computations - 
+    <img src="../static/docs/valve.png" width="40" height="40" class="d-inline-block align-center" alt="" loading="lazy">
+    Flow Valve Computations - 
     <small class="navbar-text">Parameters and Computing Valve Modeling</small>
   </a>
 </nav>
@@ -26,7 +28,7 @@
   </header>
 
 
-    <form>
+    <form method="POST">
 <br>
 <div class="container">
 
@@ -42,26 +44,28 @@
 
         <div class="row">
 
-        <div class="col-3">
-          <label for="inputState">Unit</label>
-          <select id="inputState" class="form-control">
+        <div class="col-2">
+          <label for="inputState">NPS Units</label>
+          <select id="pipe_unit" class="form-control">
             <option selected></option>
-            <option value="pipe_in">NPS (in)</option>
-            <option value="pipe_mm">mm</option>
+            <option value="in">in</option>
+            <option value="mm">mm</option>
+            <option value="m">m</option>
           </select>
         </div>
           
-        <div class="col-4">
+        <div class="col-2">
 
        
           <label for="inputPinlet">Pipe inlet Diameter</label>
-          <input type="number" class="form-control" id="inputPinlet">
+          <input type="number" class="form-control" id="inletD">
           <label for="inputPinlet">Pipe outlet Diameter</label>
-          <input type="number" class="form-control" id="inputPoutlet">
+          <input type="number" class="form-control" id="outletD">
         
         </div>
 
-        <div class="col-3">
+        <!-- Actually no functionality on Pipe Schedule -->
+        <div class="col-2">
           <label for="inputState">Pipe Schedule</label>
           <select id="inputState" class="form-control">
             <option selected></option>
@@ -95,9 +99,9 @@
             </div>
 
         <div class="row">
-                <div class="col-4">
-                  <label for="inputState">Liquid Specs</label>
-                  <select id="inputState" class="form-control">
+                <div class="col-2">
+                  <label for="inputState">Fluid Specs</label>
+                  <select id="liquid" class="form-control">
                     <option selected></option>
                     <option value="water">Water</option>
                     <option value="ethanol">Ethanol</option>
@@ -111,9 +115,9 @@
                 <div class="alert alert-danger" role="alert" style="display:none;" id="errorAlert">
                   A simple danger alert—check it out!
                 </div>
-                <div class="alert alert-success" role="alert" style="display:none;" id="successAlert">
-                  <h4 class="alert-heading">Cv Sizing</h4>
-                  <p></p>
+                <div class="alert alert-success" role="alert" style="display:none;" id="successAlert" >
+                  <h4 class="alert-heading" ></h4>
+                  <p>Results</p>
                   <hr>
                   <p class="mb-0"></p>
                 </div>
@@ -121,59 +125,111 @@
 
               </div>
 
-          <!-- </div> -->
+          
 
-          <!-- <div class="row"> -->
-            <div class="col-3">
+          
+            <div class="col-2">
               <label for="inputState">Flow Unit </label>
-              <select id="flow_unit_input" class="form-control">
+              <select id="flow_unit" class="form-control">
                 <option selected></option>
-                <option value="pipe_in">gpm</option>
-                <option value="pipe_mm">m3 / hr</option>
+                <option value="gpm">gpm</option>
+                <option value="m3_hr">m3 / hr</option>
+                <option value="ton_hr">ton / hr</option>
+                <option value="ft3_hr">ft3 / hr</option>
+                <option value="m3_seg">m3 / seg</option>
               </select>
             
 
-            <!-- <div class="col-3"> -->
-              <br><br><br>
+               <br><br><br>
               <label for="inputState">Pressure Units </label>
-              <select id="inputState" class="form-control">
+              <select id="press_unit" class="form-control">
                 <option selected></option>
-                <option value="pipe_in">psi</option>
-                <option value="pipe_mm">psig</option>
-                <option value="pipe_mm">bar</option>
+                <option value="psi">psi</option>
+                <option value="psig">psig</option>
+                <option value="bar">bar</option>
+                <option value="kPascal">kPascal</option>
+                <option value="Pascal">Pascal</option>
               </select>
 
               <br><br><br>
               <label for="inputState">Temp Unit </label>
-              <select id="inputState" class="form-control">
+              <select id="temp_unit" class="form-control">
                 <option selected></option>
-                <option value="pipe_in">C</option>
-                <option value="pipe_mm">F</option>
-                <option value="pipe_mm">K</option>
+                <option value="C">C</option>
+                <option value="F">F</option>
+                <option value="K">K</option>
               </select>
 
 
-            <!-- </div> -->
+          
           </div>
-            <div class="col-3">
-              <label for="flow">Process Flow</label>
-              <input type="number" class="form-control" id="flow_input">
+            <div class="col-2">
+
+                  <input type="checkbox" class="form-check-input" id="CheckMin">
+                  <label for="flow">Process Flow (Min)</label>
+                  <input type="number" class="form-control" id="flow_Min">
+
+                  <label for="P1">Inlet P</label>
+                  <input type="number" class="form-control" id="P1_Min">
+
+                  <label for="P2">Outlet P</label>
+                  <input type="number" class="form-control" id="P2_Min">
+
+                  <label for="deltaP">Pressure Drop</label>
+                  <input type="number" class="form-control" id="deltaP_Min" >
+
+                  <label for="temp">Process Temperature </label>
+                  <input type="number" class="form-control" id="temp_Min" >
+                  <br>
+                  <div class="alert alert-secondary" role="alert" style="display:none;"  id="ResultMin" >
+                    Cv
+                  </div>
+
+                </div>
+
+
+         
+<!-- Operational Procces details -->
+
+            <div class="col-2" >
+
+              <input type="checkbox" class="form-check-input" id="CheckOper">
+              <label for="flow" >Process Flow (Operat)</label>
+              <input type="number" class="form-control" id="flow_Op" disabled>
 
               <label for="P1">Inlet P</label>
-              <input type="number" class="form-control" id="P1">
+              <input type="number" class="form-control" id="P1_Op" disabled>
 
               <label for="P2">Outlet P</label>
-              <input type="number" class="form-control" id="P1">
+              <input type="number" class="form-control" id="P2_Op" disabled>
 
               <label for="deltaP">Pressure Drop</label>
-              <input type="number" class="form-control" id="deltaP" >
+              <input type="number" class="form-control" id="deltaP_Op" disabled >
 
               <label for="temp">Process Temperature </label>
-              <input type="number" class="form-control" id="temp" >
+              <input type="number" class="form-control" id="temp_Op" disabled >
             </div>
-          <!-- </div> -->
 
-          <!-- <div class="row"> -->
+
+            <!-- Maximum Operational flow -->
+            <div class="col-2">
+              <input type="checkbox" class="form-check-input" id="CheckMax">
+              <label for="flow">Process Flow (Max)</label>
+              <input type="number" class="form-control" id="flow_Max">
+
+              <label for="P1">Inlet P</label>
+              <input type="number" class="form-control" id="P1_Max">
+
+              <label for="P2">Outlet P</label>
+              <input type="number" class="form-control" id="P2_Max">
+
+              <label for="deltaP">Pressure Drop</label>
+              <input type="number" class="form-control" id="deltaP_Max" >
+
+              <label for="temp">Process Temperature </label>
+              <input type="number" class="form-control" id="temp_Max" >
+            </div>
+                      
 
           </div>
 
@@ -185,20 +241,25 @@
   </div>
 
 
+
+
+  
+
   <footer>
     <br>
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-      <p>Developed by germanbarboza@gmail.com - 2020 </p>
+     <nav class="navbar navbar-light" style="background-color: #bfc5c5;">
+      <img src="../static/docs/coati.jpg" width="20" height="20" class="d-inline-block align-left" alt="" loading="lazy">
+      Developed by germanbarboza@gmail.com - 2020 
     </nav>
   </footer>
             
             <!-- jQuery (Bootstrap JS plugins depend on it) -->
-  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="../static/js/jquery-2.1.4.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/script.js"></script>
   <script src="js/bootstrap.bundle.js"></script>
-  <script src="js/jquery-3.5.1.slim.min.js"></script>
+  <script src="../static/js/jquery-3.5.1.slim.min.js"></script>
 <!-- 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
