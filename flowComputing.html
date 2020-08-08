@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Valve Sizing Calculator</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+  </head>
+<body id="body">
+
+  <header>
+<!-- Image and text -->
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#" >
+    <img src="docs/valve.png" width="40" height="40" class="d-inline-block align-center" alt="" loading="lazy">
+    Flow Computations - 
+    <small class="navbar-text">Parameters and Computing Valve Modeling</small>
+  </a>
+</nav>
+  
+  </header>
+
+
+    <form>
+<br>
+<div class="container">
+
+        <!--  **************   Pipe data -->
+        <div class="form-group col-md-12">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Pipe Data</li>
+            </ol>
+          </nav>
+        </div>
+
+
+        <div class="row">
+
+        <div class="col-3">
+          <label for="inputState">Unit</label>
+          <select id="inputState" class="form-control">
+            <option selected></option>
+            <option value="pipe_in">NPS (in)</option>
+            <option value="pipe_mm">mm</option>
+          </select>
+        </div>
+          
+        <div class="col-4">
+
+       
+          <label for="inputPinlet">Pipe inlet Diameter</label>
+          <input type="number" class="form-control" id="inputPinlet">
+          <label for="inputPinlet">Pipe outlet Diameter</label>
+          <input type="number" class="form-control" id="inputPoutlet">
+        
+        </div>
+
+        <div class="col-3">
+          <label for="inputState">Pipe Schedule</label>
+          <select id="inputState" class="form-control">
+            <option selected></option>
+            <option value="5">5</option>
+            <option value="5s">5s</option>
+            <option value="10">10</option>
+            <option value="10s">10s</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="std">std</option>
+            <option value="40">40</option>
+            <option value="40s">40s</option>
+          </select>
+ 
+        </div>
+
+        </div>
+
+
+        </div><!-- End Container  -->
+<br>
+        <div class="container">
+
+            <!--  **************   Process data -->
+            <div class="col-12">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">Process Data</li>
+                </ol>
+              </nav>
+            </div>
+
+        <div class="row">
+                <div class="col-4">
+                  <label for="inputState">Liquid Specs</label>
+                  <select id="inputState" class="form-control">
+                    <option selected></option>
+                    <option value="water">Water</option>
+                    <option value="ethanol">Ethanol</option>
+                  </select>
+                  <small id="LiquidHelp" class="form-text text-muted">Selecting proper Liquid, details about density, vapor pressure, critical pressure and viscosity are predetermined</small>
+                
+                <br><br>
+                <button type="submit" class="btn btn-primary" data-dismiss ="alert">Compute</button>
+
+                <br><br>
+                <div class="alert alert-danger" role="alert" style="display:none;" id="errorAlert">
+                  A simple danger alert—check it out!
+                </div>
+                <div class="alert alert-success" role="alert" style="display:none;" id="successAlert">
+                  <h4 class="alert-heading">Cv Sizing</h4>
+                  <p></p>
+                  <hr>
+                  <p class="mb-0"></p>
+                </div>
+
+
+              </div>
+
+          <!-- </div> -->
+
+          <!-- <div class="row"> -->
+            <div class="col-3">
+              <label for="inputState">Flow Unit </label>
+              <select id="flow_unit_input" class="form-control">
+                <option selected></option>
+                <option value="pipe_in">gpm</option>
+                <option value="pipe_mm">m3 / hr</option>
+              </select>
+            
+
+            <!-- <div class="col-3"> -->
+              <br><br><br>
+              <label for="inputState">Pressure Units </label>
+              <select id="inputState" class="form-control">
+                <option selected></option>
+                <option value="pipe_in">psi</option>
+                <option value="pipe_mm">psig</option>
+                <option value="pipe_mm">bar</option>
+              </select>
+
+              <br><br><br>
+              <label for="inputState">Temp Unit </label>
+              <select id="inputState" class="form-control">
+                <option selected></option>
+                <option value="pipe_in">C</option>
+                <option value="pipe_mm">F</option>
+                <option value="pipe_mm">K</option>
+              </select>
+
+
+            <!-- </div> -->
+          </div>
+            <div class="col-3">
+              <label for="flow">Process Flow</label>
+              <input type="number" class="form-control" id="flow_input">
+
+              <label for="P1">Inlet P</label>
+              <input type="number" class="form-control" id="P1">
+
+              <label for="P2">Outlet P</label>
+              <input type="number" class="form-control" id="P1">
+
+              <label for="deltaP">Pressure Drop</label>
+              <input type="number" class="form-control" id="deltaP" >
+
+              <label for="temp">Process Temperature </label>
+              <input type="number" class="form-control" id="temp" >
+            </div>
+          <!-- </div> -->
+
+          <!-- <div class="row"> -->
+
+          </div>
+
+        </div><!-- End Container  -->
+
+
+
+    </form>
+  </div>
+
+
+  <footer>
+    <br>
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+      <p>Developed by germanbarboza@gmail.com - 2020 </p>
+    </nav>
+  </footer>
+            
+            <!-- jQuery (Bootstrap JS plugins depend on it) -->
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/bootstrap.bundle.js"></script>
+  <script src="js/jquery-3.5.1.slim.min.js"></script>
+<!-- 
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
+
+</body>
+
+</html>
